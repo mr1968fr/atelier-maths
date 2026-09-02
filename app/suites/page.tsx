@@ -41,47 +41,47 @@ const LAB_XP = 150;
 const steps: Step[] = [
   {
     number: '01',
-    title: 'Observer une évolution',
+    title: 'Je comprends : observer une évolution',
     subtitle: 'Une suite décrit une quantité qui change',
     content:
       'Une suite permet de représenter une quantité qui évolue étape après étape : une population, un salaire, une dette, un stock ou encore une audience.',
     example:
-      'Exemple : une population compte 1 000 individus au départ et augmente de 50 chaque année. On peut noter u₀ = 1 000, u₁ = 1 050, u₂ = 1 100…',
+      'Exemple : une population compte 1 000 individus au départ et augmente de 50 chaque année.\n\nu₀ = 1 000\nu₁ = 1 050\nu₂ = 1 100\nu₃ = 1 150',
     takeaway:
       'Une suite transforme une évolution réelle en une succession de valeurs que l’on peut calculer, comparer et prévoir.',
   },
   {
     number: '02',
-    title: 'La suite arithmétique',
-    subtitle: 'Quand on ajoute toujours la même quantité',
+    title: 'Je fais avec toi : reconnaître le modèle',
+    subtitle: 'Ajouter ou multiplier ? C’est la question essentielle.',
     content:
-      'Une suite est arithmétique lorsque l’on passe d’un terme au suivant en ajoutant toujours le même nombre r. Ce nombre s’appelle la raison.',
+      'Pour choisir le bon modèle, observe ce qui se passe d’un terme au suivant. Si on ajoute toujours la même quantité, la suite est arithmétique. Si on multiplie toujours par le même nombre, elle est géométrique.',
     example:
-      'uₙ₊₁ = uₙ + r\n\nSi u₀ = 500 et r = 25 :\n500 → 525 → 550 → 575 → …',
+      'Même ajout :\n500 → 525 → 550 → 575\n\nOn ajoute toujours 25 : suite arithmétique.\n\nMême multiplication :\n1 000 → 1 050 → 1 102,50\n\nOn multiplie toujours par 1,05 : suite géométrique.',
     takeaway:
-      'Une évolution à pas constant est un modèle arithmétique.',
+      'Réflexe à retenir : + la même quantité → arithmétique ; × le même coefficient → géométrique.',
   },
   {
     number: '03',
-    title: 'La suite géométrique',
-    subtitle: 'Quand on multiplie toujours par le même nombre',
+    title: 'Je m’entraîne : traduire une évolution',
+    subtitle: 'Passer d’une situation réelle à une formule',
     content:
-      'Une suite est géométrique lorsque l’on passe d’un terme au suivant en multipliant toujours par le même nombre q. Ce modèle est particulièrement utile pour les pourcentages.',
+      'Une fois le modèle identifié, on peut écrire une relation de récurrence ou une formule explicite. Les pourcentages conduisent généralement à une suite géométrique.',
     example:
-      'uₙ₊₁ = q × uₙ\n\nSi u₀ = 1 000 et q = 1,05 :\n1 000 → 1 050 → 1 102,50 → …',
+      'Hausse de 5 % :\ncoefficient multiplicateur = 1 + 0,05 = 1,05\n\nDonc :\nuₙ₊₁ = 1,05 × uₙ\n\net, si u₀ est connu :\nuₙ = u₀ × 1,05ⁿ',
     takeaway:
-      'Une hausse de 5 % correspond à multiplier par 1,05. Une baisse de 5 % correspond à multiplier par 0,95.',
+      'Une hausse de 5 % correspond à × 1,05. Une baisse de 5 % correspond à × 0,95.',
   },
   {
     number: '04',
-    title: 'MISSION',
-    subtitle: 'Modéliser une situation réelle',
+    title: 'Je réalise : modéliser une situation réelle',
+    subtitle: 'Choisir, calculer et interpréter',
     content:
-      'Tu vas utiliser les suites pour analyser une situation issue d’une autre spécialité. Le but n’est plus seulement de calculer : il faut choisir un modèle, l’utiliser et interpréter le résultat.',
+      'Tu vas maintenant utiliser les suites dans une situation issue d’une autre spécialité. Le but n’est plus seulement de calculer : il faut choisir un modèle, l’utiliser et interpréter le résultat.',
     example:
-      'Choisis une mission SES, SVT ou HGGSP. Lis la situation, identifie le modèle adapté, réalise les calculs puis produis le livrable demandé.',
+      'Méthode :\n1. Identifier ce qui évolue.\n2. Déterminer s’il s’agit d’un ajout ou d’une multiplication.\n3. Construire le modèle.\n4. Calculer.\n5. Interpréter le résultat dans le contexte.',
     takeaway:
-      'La compétence essentielle : reconnaître quel modèle mathématique correspond à la situation étudiée.',
+      'La compétence essentielle : reconnaître le modèle mathématique adapté puis donner du sens au résultat.',
   },
 ];
 
@@ -752,6 +752,23 @@ export default function SuitesPage() {
                   <div
                     style={{
                       marginTop: 18,
+                      padding: '14px 16px',
+                      background: '#FBF8F5',
+                      borderRadius: 7,
+                      fontSize: 12,
+                      color: MUTED,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    <strong style={{ color: INK }}>Ta démarche</strong>
+                    <div style={{ marginTop: 5 }}>
+                      01 · Identifier → 02 · Choisir le modèle → 03 · Calculer → 04 · Interpréter
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      marginTop: 12,
                       paddingTop: 15,
                       borderTop: '1px solid #ECE6E0',
                       fontSize: 12,
@@ -1066,7 +1083,7 @@ export default function SuitesPage() {
                     }}
                   >
                     Une population passe de 1 000 à 1 150 puis à 1 300.
-                    Quel modèle décris-tu ?
+                    Observe les écarts entre les valeurs avant de choisir le modèle.
                   </p>
                 </div>
 
@@ -1081,7 +1098,29 @@ export default function SuitesPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
+              <div
+                style={{
+                  marginTop: 18,
+                  padding: '14px 16px',
+                  background: 'white',
+                  borderLeft: `3px solid #3D6785`,
+                  borderRadius: 6,
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                  color: MUTED,
+                }}
+              >
+                <strong style={{ color: INK }}>Étape 1 · Observe :</strong>{' '}
+                calcule 1 150 − 1 000 puis 1 300 − 1 150.
+                <br />
+                <strong style={{ color: INK }}>Étape 2 · Compare :</strong>{' '}
+                les deux résultats sont-ils identiques ?
+                <br />
+                <strong style={{ color: INK }}>Étape 3 · Choisis :</strong>{' '}
+                si on ajoute toujours la même quantité, quel modèle faut-il utiliser ?
+              </div>
+
+              <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
                 {[
                   ['arithmetique', 'Arithmétique'],
                   ['geometrique', 'Géométrique'],
@@ -1303,6 +1342,23 @@ export default function SuitesPage() {
                     <div
                       style={{
                         marginTop: 16,
+                        padding: '13px 14px',
+                        background: '#FBF8F5',
+                        borderRadius: 7,
+                        fontSize: 12,
+                        color: MUTED,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      <strong style={{ color: INK }}>Ta démarche</strong>
+                      <div style={{ marginTop: 5 }}>
+                        01 · Identifier → 02 · Choisir le modèle → 03 · Calculer → 04 · Interpréter
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        marginTop: 12,
                         paddingTop: 13,
                         borderTop: '1px solid #ECE6E0',
                         fontSize: 12,
@@ -1417,11 +1473,26 @@ export default function SuitesPage() {
             style={{
               fontSize: 42,
               letterSpacing: '-0.05em',
-              margin: '0 0 42px',
+              margin: '0 0 14px',
             }}
           >
             Vérifions ce que tu as compris.
           </h1>
+
+          <p
+            style={{
+              margin: '0 0 34px',
+              color: MUTED,
+              fontSize: 15,
+              lineHeight: 1.65,
+              maxWidth: 650,
+            }}
+          >
+            Cette validation vérifie trois compétences essentielles :
+            <strong style={{ color: INK }}> reconnaître</strong> le modèle,
+            <strong style={{ color: INK }}> calculer</strong> avec une suite
+            et <strong style={{ color: INK }}>interpréter</strong> le résultat.
+          </p>
 
           <div
             style={{
