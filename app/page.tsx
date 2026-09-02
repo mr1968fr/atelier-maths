@@ -26,7 +26,7 @@ const chapters = [
     color: '#7957A8',
     light: '#F1ECF7',
     href: '/exponentielle',
-    available: false,
+    available: true,
   },
   {
     number: '04',
