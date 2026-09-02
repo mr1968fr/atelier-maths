@@ -109,6 +109,10 @@
   overflow: hidden;
 }
 
+.rounded-\[2\.5rem\] {
+  border-radius: 2.5rem;
+}
+
 .rounded-\[2rem\] {
   border-radius: 2rem;
 }
@@ -205,6 +209,14 @@
   font-variant-numeric: var(--tw-ordinal, ) var(--tw-slashed-zero, ) var(--tw-numeric-figure, ) var(--tw-numeric-spacing, ) var(--tw-numeric-fraction, );
 }
 
+.underline {
+  text-decoration-line: underline;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
 .opacity-40 {
   opacity: .4;
 }
@@ -230,6 +242,18 @@
   transition-duration: var(--tw-duration, 0s);
 }
 
+.transition-colors {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(--tw-ease, ease);
+  transition-duration: var(--tw-duration, 0s);
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: var(--tw-ease, ease);
+  transition-duration: var(--tw-duration, 0s);
+}
+
 .duration-300 {
   --tw-duration: .3s;
   transition-duration: .3s;
@@ -238,6 +262,12 @@
 .duration-500 {
   --tw-duration: .5s;
   transition-duration: .5s;
+}
+
+@media (hover: hover) {
+  .group-hover\:opacity-100:is(:where(.group):hover *) {
+    opacity: 1;
+  }
 }
 
 .active\:shadow-none:active {
