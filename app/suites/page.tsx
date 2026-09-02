@@ -4,33 +4,34 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 type ModeSession = '20min' | '1h' | '1h30';
-
-type Detail = {
-  h: string;
-  p: string;
-};
+type View = 'home' | 'cours' | 'quiz' | 'resultat';
 
 type Project = {
+  specialite: string;
   topic: string;
   desc: string;
   livrable: string;
   difficulty: string;
   duration: string;
-  specialite: string;
 };
 
 type Step = {
   number?: string;
+  label?: string;
   title: string;
   subtitle?: string;
   content?: string;
-  details?: Detail[];
-  hasLab?: boolean;
-  hasLab2?: boolean;
-  isProject?: boolean;
-  intro?: string;
+  details?: { h: string; p: string }[];
+  history?: string;
+  otherSpec?: { label: string; text: string }[];
+  lab?: {
+    title: string;
+    question: string;
+    answers: string[];
+    correct: string;
+    explanation: string;
+  };
   projects?: Project[];
-  deep?: { label: string; text: string }[];
 };
 
 type Question = {
@@ -40,99 +41,139 @@ type Question = {
   explanation: string;
 };
 
+const ACCENT = '#C65D3A';
 const LAB_XP = 150;
 
-const LESSON_STEPS: Step[] = [
+const STEPS: Step[] = [
   {
     number: '01',
+    label: 'DÉCOUVRIR',
     title: 'Modéliser le réel',
-    subtitle: 'Croissance linéaire ou exponentielle ?',
+    subtitle: 'Prévoir ce qui va se passer',
     content:
-      "Une suite permet de décrire l'évolution d'une quantité au fil du temps. Le premier réflexe consiste à observer comment cette quantité évolue.",
+      "Une suite permet de décrire l'évolution d'une quantité étape après étape. Population, salaire, capital, nombre de bactéries : dès qu'une quantité évolue régulièrement, les suites deviennent un outil puissant.",
     details: [
       {
-        h: 'Suite arithmétique',
-        p: "On ajoute toujours la même quantité. Exemple : +500 habitants chaque année.",
+        h: 'Ajouter',
+        p: 'On ajoute toujours la même quantité : suite arithmétique.',
       },
       {
-        h: 'Suite géométrique',
-        p: "On multiplie toujours par le même nombre. Exemple : +5 % par an signifie × 1,05.",
+        h: 'Multiplier',
+        p: 'On multiplie toujours par le même coefficient : suite géométrique.',
       },
       {
-        h: 'Vocabulaire',
-        p: "Les valeurs u₀, u₁, u₂, ... sont les termes de la suite. Le nombre qui indique la position est l'indice.",
+        h: 'Prévoir',
+        p: 'Une fois le modèle identifié, on peut calculer les valeurs futures.',
       },
     ],
-    deep: [
+    history:
+      "Les suites ne sont pas nées avec les ordinateurs. Les mathématiciens les utilisent depuis des siècles pour étudier les intérêts, les populations et les phénomènes qui évoluent étape par étape.",
+    otherSpec: [
       {
-        label: 'À retenir',
-        text: "La question essentielle est : ajoute-t-on une quantité constante ou multiplie-t-on par un coefficient constant ?",
+        label: 'SES',
+        text: 'Évolution des salaires, inflation, intérêts.',
+      },
+      {
+        label: 'SVT',
+        text: 'Croissance d’une population ou d’une culture.',
+      },
+      {
+        label: 'HGGSP',
+        text: 'Évolution démographique et données historiques.',
       },
     ],
   },
   {
     number: '02',
+    label: 'COMPRENDRE',
     title: 'La suite arithmétique',
     subtitle: "L'évolution à pas constant",
     content:
-      "Une suite arithmétique évolue toujours du même nombre. Ce nombre est appelé la raison r.",
+      'Une suite arithmétique évolue toujours de la même quantité. Cette quantité est appelée la raison r.',
     details: [
       {
-        h: 'Relation de récurrence',
+        h: 'Relation',
         p: 'uₙ₊₁ = uₙ + r',
       },
       {
-        h: 'Formule explicite',
+        h: 'Formule',
         p: 'uₙ = u₀ + n × r',
       },
       {
         h: 'Exemple',
-        p: 'Si u₀ = 1 500 et r = 50, alors u₅ = 1 500 + 5 × 50 = 1 750.',
+        p: '1 500 puis 1 550 puis 1 600 : la raison est 50.',
       },
     ],
-    hasLab: true,
+    history:
+      'Ce type de progression apparaît naturellement dès que l’on compte des augmentations ou des diminutions régulières : population, distance parcourue à vitesse constante, économies réalisées chaque semaine...',
+    lab: {
+      title: 'Mini-Lab · Trouver le modèle',
+      question: 'Pour passer d’un terme au suivant, que fait-on ?',
+      answers: ['On ajoute (+ r)', 'On multiplie (× q)'],
+      correct: 'On ajoute (+ r)',
+      explanation:
+        'Correct : une suite arithmétique ajoute toujours la même raison r.',
+    },
   },
   {
     number: '03',
+    label: 'COMPRENDRE',
     title: 'La suite géométrique',
-    subtitle: 'La puissance des pourcentages',
+    subtitle: 'Quand les pourcentages entrent en jeu',
     content:
-      "Une suite géométrique évolue en multipliant toujours par le même coefficient q.",
+      'Une suite géométrique évolue en multipliant toujours par le même coefficient q. Elle est particulièrement utile lorsqu’une situation est décrite en pourcentage.',
     details: [
       {
-        h: 'Coefficient multiplicateur',
-        p: 'Une hausse de 5 % correspond à q = 1,05. Une baisse de 5 % correspond à q = 0,95.',
+        h: 'Coefficient',
+        p: 'Hausse de 5 % → q = 1,05.',
       },
       {
-        h: 'Formule explicite',
+        h: 'Formule',
         p: 'uₙ = u₀ × qⁿ',
       },
       {
-        h: 'Vigilance',
-        p: 'Ajouter 5 % puis encore 5 % ne donne pas +10 % exactement : on multiplie deux fois par 1,05.',
+        h: 'Attention',
+        p: 'Deux hausses de 5 % ne donnent pas exactement une hausse de 10 %.',
       },
     ],
-    hasLab2: true,
-    deep: [
+    history:
+      'Les progressions géométriques sont notamment liées aux problèmes d’intérêts composés : un phénomène ancien, mais toujours présent dans la finance et l’économie actuelles.',
+    otherSpec: [
       {
-        label: 'Pour aller plus loin',
-        text: "Les suites géométriques sont particulièrement adaptées aux phénomènes exprimés en pourcentage : inflation, intérêts, croissance d'une population ou évolution d'un chiffre d'affaires.",
+        label: 'SES',
+        text: 'Inflation, intérêts composés, croissance économique.',
+      },
+      {
+        label: 'SVT',
+        text: 'Croissance exponentielle d’une population.',
+      },
+      {
+        label: 'HGGSP',
+        text: 'Croissance démographique et diffusion d’un phénomène.',
       },
     ],
+    lab: {
+      title: 'Mini-Lab · Les pourcentages',
+      question: 'Quel coefficient correspond à une hausse de 5 % ?',
+      answers: ['× 1,05', '× 0,05', '+ 5'],
+      correct: '× 1,05',
+      explanation:
+        'Correct : 100 % + 5 % = 105 %, donc le coefficient multiplicateur est 1,05.',
+    },
   },
   {
-    number: 'MISSION',
-    title: 'Atelier de modélisation',
-    subtitle: 'Choisissez votre spécialité',
-    isProject: true,
-    intro:
-      "Vous allez maintenant utiliser les suites pour étudier une situation proche de votre domaine. Chaque mission demande un livrable précis.",
+    number: '04',
+    label: 'MISSION',
+    title: 'Les maths rencontrent ta spécialité',
+    subtitle: 'À toi de choisir ton terrain',
+    content:
+      'Tu connais peut-être déjà ces situations grâce à une autre spécialité. Ici, les mathématiques deviennent l’outil qui permet de les modéliser.',
     projects: [
       {
         specialite: 'SES',
-        topic: "Inflation et pouvoir d'achat",
+        topic: 'Inflation et pouvoir d’achat',
         desc:
-          "Un salaire de 1 500 € augmente de 1,2 % par an tandis que les prix augmentent de 2 % par an.",
+          'Un salaire de 1 500 € augmente de 1,2 % par an tandis que les prix augmentent de 2 % par an.',
         livrable:
           'Identifier les suites, calculer les valeurs sur 5 ans et rédiger une conclusion sur le pouvoir d’achat.',
         difficulty: 'Avancé',
@@ -154,7 +195,7 @@ const LESSON_STEPS: Step[] = [
         desc:
           'Une ville compte 50 000 habitants et perd 800 habitants chaque année.',
         livrable:
-          'Construire le modèle arithmétique, calculer la population après 12 ans et interpréter les conséquences.',
+          'Construire le modèle arithmétique, calculer la population après 12 ans et interpréter le résultat.',
         difficulty: 'Découverte',
         duration: '15 min',
       },
@@ -162,13 +203,13 @@ const LESSON_STEPS: Step[] = [
   },
 ];
 
-const QUIZ_QUESTIONS: Question[] = [
+const QUESTIONS: Question[] = [
   {
     q: 'Une quantité augmente chaque année de la même valeur. Quelle suite utiliser ?',
     options: ['Suite arithmétique', 'Suite géométrique', 'Aucune suite'],
     correct: 0,
     explanation:
-      "Une variation constante correspond à une suite arithmétique.",
+      'Une variation constante correspond à une suite arithmétique.',
   },
   {
     q: 'Une quantité diminue de 10 %. Quel est le coefficient multiplicateur ?',
@@ -200,72 +241,64 @@ const QUIZ_QUESTIONS: Question[] = [
 ];
 
 export default function SuitesPage() {
-  const [modeSession, setModeSession] =
-    useState<ModeSession>('20min');
-
-  const [view, setView] = useState<
-    'home' | 'cours' | 'quiz' | 'resultat'
-  >('home');
-
+  const [mode, setMode] = useState<ModeSession>('20min');
+  const [view, setView] = useState<View>('home');
   const [step, setStep] = useState(0);
-  const [openLesson, setOpenLesson] = useState(false);
 
-  const [quizIdx, setQuizIdx] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] =
-    useState<number | null>(null);
-  const [isLocked, setIsLocked] = useState(false);
+  const [labAnswers, setLabAnswers] = useState<Record<number, string>>(
+    {}
+  );
+
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [locked, setLocked] = useState(false);
   const [score, setScore] = useState(0);
 
-  const [bonusXP, setBonusXP] = useState(0);
+  const current = STEPS[step];
+  const question = QUESTIONS[quizIndex];
+  const lastStep = step === STEPS.length - 1;
 
-  const [lab1Ans, setLab1Ans] = useState<string | null>(null);
-  const [lab2Ans, setLab2Ans] = useState<string | null>(null);
-
-  const current = LESSON_STEPS[step];
-  const question = QUIZ_QUESTIONS[quizIdx];
-  const isLastStep = step === LESSON_STEPS.length - 1;
-  const isLong = modeSession !== '20min';
+  const bonusXP = Object.entries(labAnswers).reduce(
+    (total, [index, answer]) =>
+      answer === STEPS[Number(index)].lab?.correct
+        ? total + LAB_XP
+        : total,
+    0
+  );
 
   const totalXP = score * 100 + bonusXP;
 
-  function restart() {
-    setView('home');
-    setStep(0);
-    setOpenLesson(false);
-    setQuizIdx(0);
-    setSelectedAnswer(null);
-    setIsLocked(false);
-    setScore(0);
-    setBonusXP(0);
-    setLab1Ans(null);
-    setLab2Ans(null);
-  }
-
-  function startChapter() {
+  function start() {
     setView('cours');
     setStep(0);
-    setOpenLesson(false);
+  }
+
+  function chooseLab(answer: string) {
+    if (!current.lab || labAnswers[step]) return;
+
+    setLabAnswers((old) => ({
+      ...old,
+      [step]: answer,
+    }));
   }
 
   function nextStep() {
-    setOpenLesson(false);
-
-    if (isLastStep) {
+    if (lastStep) {
       setView('quiz');
-      setQuizIdx(0);
-      setSelectedAnswer(null);
-      setIsLocked(false);
+      setQuizIndex(0);
+      setSelected(null);
+      setLocked(false);
       return;
     }
 
     setStep((value) => value + 1);
   }
 
-  function handleAnswer(index: number) {
-    if (isLocked) return;
+  function answerQuiz(index: number) {
+    if (locked) return;
 
-    setSelectedAnswer(index);
-    setIsLocked(true);
+    setSelected(index);
+    setLocked(true);
 
     if (index === question.correct) {
       setScore((value) => value + 1);
@@ -273,70 +306,68 @@ export default function SuitesPage() {
   }
 
   function nextQuestion() {
-    if (quizIdx < QUIZ_QUESTIONS.length - 1) {
-      setQuizIdx((value) => value + 1);
-      setSelectedAnswer(null);
-      setIsLocked(false);
+    if (quizIndex < QUESTIONS.length - 1) {
+      setQuizIndex((value) => value + 1);
+      setSelected(null);
+      setLocked(false);
     } else {
       setView('resultat');
     }
   }
 
-  function handleLab1(answer: string) {
-    if (lab1Ans) return;
-
-    setLab1Ans(answer);
-
-    if (answer === 'On ajoute (+ r)') {
-      setBonusXP((value) => value + LAB_XP);
-    }
-  }
-
-  function handleLab2(answer: string) {
-    if (lab2Ans) return;
-
-    setLab2Ans(answer);
-
-    if (answer === '× 1,05') {
-      setBonusXP((value) => value + LAB_XP);
-    }
+  function restart() {
+    setView('home');
+    setStep(0);
+    setLabAnswers({});
+    setQuizIndex(0);
+    setSelected(null);
+    setLocked(false);
+    setScore(0);
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f7f5] text-[#171717]">
+    <main className="min-h-screen bg-[#FFF9F5] text-[#29221F]">
       {/* NAVIGATION */}
-      <nav className="sticky top-0 z-50 border-b border-black/10 bg-[#f7f7f5]/95 backdrop-blur">
+      <nav
+        className="sticky top-0 z-50 border-b bg-[#FFF9F5]/95 backdrop-blur"
+        style={{ borderColor: `${ACCENT}30` }}
+      >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link
             href="/"
-            className="text-sm font-medium text-black/60 transition hover:text-black"
+            className="text-sm font-semibold transition hover:opacity-60"
+            style={{ color: ACCENT }}
           >
             ← Chapitres
           </Link>
 
-          <div className="absolute left-1/2 hidden -translate-x-1/2 text-sm font-semibold tracking-wide md:block">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 text-sm font-black tracking-[0.15em] md:block">
             L’ATELIER DES MATHS
           </div>
 
           <div className="flex items-center gap-2">
-            {(['20min', '1h', '1h30'] as ModeSession[]).map(
-              (mode) => (
-                <button
-                  key={mode}
-                  onClick={() => setModeSession(mode)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    modeSession === mode
-                      ? 'border-black bg-black text-white'
-                      : 'border-black/15 bg-white hover:border-black/40'
-                  }`}
-                >
-                  {mode}
-                </button>
-              )
-            )}
+            {(['20min', '1h', '1h30'] as ModeSession[]).map((item) => (
+              <button
+                key={item}
+                onClick={() => setMode(item)}
+                className="rounded-full border px-3 py-1.5 text-xs font-bold transition"
+                style={{
+                  borderColor:
+                    mode === item ? ACCENT : '#29221F20',
+                  background:
+                    mode === item ? ACCENT : 'white',
+                  color: mode === item ? 'white' : '#29221F',
+                }}
+              >
+                {item}
+              </button>
+            ))}
 
             {view !== 'home' && (
-              <div className="ml-2 rounded-full bg-black px-3 py-1.5 text-xs font-semibold text-white">
+              <div
+                className="ml-2 rounded-full px-3 py-1.5 text-xs font-black text-white"
+                style={{ backgroundColor: ACCENT }}
+              >
                 {totalXP} XP
               </div>
             )}
@@ -344,75 +375,105 @@ export default function SuitesPage() {
         </div>
       </nav>
 
-      {/* ACCUEIL DU CHAPITRE */}
+      {/* ACCUEIL */}
       {view === 'home' && (
-        <section className="mx-auto max-w-6xl px-6 py-16 md:py-24">
-          <div className="max-w-4xl">
-            <p className="mb-6 text-sm font-semibold uppercase tracking-[0.2em] text-black/45">
-              Tronc commun · Chapitre 01
-            </p>
+        <section className="mx-auto max-w-6xl px-6 py-12 md:py-20">
+          <div className="grid gap-8 lg:grid-cols-[1.4fr_.6fr]">
+            <div
+              className="rounded-[2.5rem] p-8 md:p-12"
+              style={{ backgroundColor: '#F4D5C7' }}
+            >
+              <p
+                className="text-xs font-black uppercase tracking-[0.2em]"
+                style={{ color: ACCENT }}
+              >
+                Chapitre 01 · Tronc commun
+              </p>
 
-            <h1 className="text-6xl font-black tracking-[-0.05em] md:text-8xl">
-              LES SUITES
-            </h1>
+              <h1 className="mt-5 text-6xl font-black tracking-[-0.06em] md:text-8xl">
+                LES
+                <br />
+                <span style={{ color: ACCENT }}>SUITES</span>
+              </h1>
 
-            <p className="mt-8 max-w-2xl text-2xl leading-tight text-black/70 md:text-3xl">
-              Comment prévoir l’évolution d’une population,
-              d’un capital ou d’un phénomène ?
-            </p>
+              <p className="mt-8 max-w-2xl text-2xl font-semibold leading-tight md:text-3xl">
+                Comment prévoir l’évolution d’une population, d’un
+                salaire ou d’un capital ?
+              </p>
 
-            <p className="mt-6 max-w-2xl text-base leading-7 text-black/55">
-              Les suites permettent de modéliser des évolutions
-              réelles. Vous allez apprendre à reconnaître les deux
-              modèles essentiels : arithmétique et géométrique.
-            </p>
+              <p className="mt-5 max-w-2xl leading-7 text-[#29221F]/65">
+                Une notion de maths devient beaucoup plus intéressante
+                lorsqu’elle permet de comprendre quelque chose que tu
+                connais déjà.
+              </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-4">
               <button
-                onClick={startChapter}
-                className="rounded-full bg-black px-7 py-4 text-sm font-semibold text-white transition hover:bg-black/80"
+                onClick={start}
+                className="mt-8 rounded-full px-7 py-4 text-sm font-black text-white transition hover:scale-[1.02]"
+                style={{ backgroundColor: ACCENT }}
               >
                 Commencer le chapitre →
               </button>
+            </div>
 
-              <span className="text-sm text-black/45">
-                Session {modeSession}
-              </span>
+            <div className="grid gap-4">
+              <div className="rounded-[2rem] bg-white p-7 shadow-sm">
+                <p
+                  className="text-xs font-black uppercase tracking-[0.18em]"
+                  style={{ color: ACCENT }}
+                >
+                  L’idée
+                </p>
+                <h2 className="mt-3 text-2xl font-black">
+                  Observer l’évolution
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-black/55">
+                  Ajouter une quantité ou multiplier par un coefficient :
+                  c’est toute la différence.
+                </p>
+              </div>
+
+              <div
+                className="rounded-[2rem] p-7 text-white"
+                style={{ backgroundColor: ACCENT }}
+              >
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-white/65">
+                  Dans ta spécialité
+                </p>
+                <p className="mt-3 text-xl font-bold">
+                  SES · SVT · HGGSP
+                </p>
+                <p className="mt-3 text-sm leading-6 text-white/75">
+                  Les suites permettent de modéliser des phénomènes
+                  que tu rencontres déjà.
+                </p>
+              </div>
+
+              <div className="rounded-[2rem] border border-[#29221F15] bg-[#FFFDFB] p-7">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-black/40">
+                  Ton défi
+                </p>
+                <p className="mt-3 text-lg font-bold">
+                  Comprendre · Modéliser · Prévoir
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="mt-20 grid gap-4 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
             {[
-              {
-                label: 'SES',
-                title: 'Inflation',
-                text: 'Salaires, prix et pouvoir d’achat.',
-              },
-              {
-                label: 'SVT',
-                title: 'Croissance',
-                text: 'Population bactérienne et évolution.',
-              },
-              {
-                label: 'HGGSP',
-                title: 'Démographie',
-                text: 'Évolution de la population d’une ville.',
-              },
-            ].map((item) => (
+              ['🟠', 'Suite arithmétique', 'On ajoute toujours la même quantité.'],
+              ['🔴', 'Suite géométrique', 'On multiplie toujours par le même coefficient.'],
+              ['🌍', 'Application', 'On utilise le modèle pour comprendre le réel.'],
+            ].map(([icon, title, text]) => (
               <div
-                key={item.label}
-                className="rounded-3xl border border-black/10 bg-white p-7"
+                key={title}
+                className="rounded-[2rem] border border-[#29221F10] bg-white p-6"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-black/40">
-                  {item.label}
-                </p>
-
-                <h2 className="mt-5 text-2xl font-bold">
-                  {item.title}
-                </h2>
-
-                <p className="mt-3 text-sm leading-6 text-black/55">
-                  {item.text}
+                <span className="text-2xl">{icon}</span>
+                <h2 className="mt-4 font-black">{title}</h2>
+                <p className="mt-2 text-sm leading-6 text-black/55">
+                  {text}
                 </p>
               </div>
             ))}
@@ -422,366 +483,370 @@ export default function SuitesPage() {
 
       {/* COURS */}
       {view === 'cours' && (
-        <section className="mx-auto max-w-5xl px-6 py-12 md:py-16">
-          <div className="mb-10">
-            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-black/40">
-              <span>
-                Étape {step + 1} / {LESSON_STEPS.length}
-              </span>
-
-              <span>{modeSession}</span>
+        <section className="mx-auto max-w-6xl px-6 py-10 md:py-14">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <p
+                className="text-xs font-black uppercase tracking-[0.2em]"
+                style={{ color: ACCENT }}
+              >
+                Les Suites · {current.label}
+              </p>
+              <p className="mt-2 text-sm text-black/45">
+                Étape {step + 1} sur {STEPS.length} · Session {mode}
+              </p>
             </div>
 
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/10">
-              <div
-                className="h-full rounded-full bg-black transition-all duration-500"
-                style={{
-                  width: `${((step + 1) / LESSON_STEPS.length) * 100}%`,
-                }}
-              />
+            <div className="hidden text-right md:block">
+              <p className="text-xs font-bold text-black/40">PROGRESSION</p>
+              <p className="mt-1 text-lg font-black">
+                {Math.round(((step + 1) / STEPS.length) * 100)} %
+              </p>
             </div>
           </div>
 
-          <article className="rounded-[2rem] border border-black/10 bg-white p-7 shadow-sm md:p-10">
-            {current.number && (
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-black/35">
-                {current.number}
-              </p>
-            )}
+          <div className="mb-8 h-2 overflow-hidden rounded-full bg-[#29221F12]">
+            <div
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${((step + 1) / STEPS.length) * 100}%`,
+                backgroundColor: ACCENT,
+              }}
+            />
+          </div>
 
-            <h1 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">
-              {current.title}
-            </h1>
+          <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+            <article className="rounded-[2.5rem] bg-white p-7 shadow-sm md:p-10">
+              <div className="flex items-start justify-between">
+                <span
+                  className="rounded-full px-4 py-2 text-xs font-black text-white"
+                  style={{ backgroundColor: ACCENT }}
+                >
+                  {current.number || 'MISSION'}
+                </span>
 
-            {current.subtitle && (
-              <p className="mt-3 text-xl text-black/55">
-                {current.subtitle}
-              </p>
-            )}
+                {step === 0 && (
+                  <span className="text-3xl">📖</span>
+                )}
+              </div>
 
-            {/* MISSION */}
-            {current.isProject ? (
-              <div className="mt-10">
-                <p className="max-w-3xl text-base leading-7 text-black/65">
-                  {current.intro}
+              <h1 className="mt-7 text-4xl font-black tracking-tight md:text-6xl">
+                {current.title}
+              </h1>
+
+              {current.subtitle && (
+                <p
+                  className="mt-3 text-xl font-semibold"
+                  style={{ color: ACCENT }}
+                >
+                  {current.subtitle}
                 </p>
+              )}
 
-                <div className="mt-8 grid gap-5">
-                  {current.projects?.map((project) => (
+              {current.content && (
+                <p className="mt-7 max-w-3xl text-lg leading-8 text-black/65">
+                  {current.content}
+                </p>
+              )}
+
+              {current.details && (
+                <div className="mt-9 grid gap-4 md:grid-cols-3">
+                  {current.details.map((detail, index) => (
+                    <div
+                      key={detail.h}
+                      className="rounded-3xl p-5"
+                      style={{
+                        backgroundColor:
+                          index === 0
+                            ? '#F8E5DC'
+                            : index === 1
+                              ? '#F4F0E8'
+                              : '#EAF0EA',
+                      }}
+                    >
+                      <p
+                        className="text-xs font-black uppercase tracking-wider"
+                        style={{ color: ACCENT }}
+                      >
+                        {detail.h}
+                      </p>
+                      <p className="mt-3 text-sm font-semibold leading-6">
+                        {detail.p}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {current.history && (
+                <div
+                  className="mt-8 rounded-3xl border-l-4 p-6"
+                  style={{
+                    borderColor: ACCENT,
+                    backgroundColor: '#FFF5EF',
+                  }}
+                >
+                  <p
+                    className="text-xs font-black uppercase tracking-[0.15em]"
+                    style={{ color: ACCENT }}
+                  >
+                    🕰️ Petite histoire
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-black/65">
+                    {current.history}
+                  </p>
+                </div>
+              )}
+
+              {current.otherSpec && (
+                <div className="mt-8">
+                  <p
+                    className="text-xs font-black uppercase tracking-[0.18em]"
+                    style={{ color: ACCENT }}
+                  >
+                    🔎 Maths × autre spécialité
+                  </p>
+
+                  <div className="mt-4 grid gap-3 md:grid-cols-3">
+                    {current.otherSpec.map((item) => (
+                      <div
+                        key={item.label}
+                        className="rounded-3xl border border-black/10 p-5"
+                      >
+                        <p className="text-lg font-black">
+                          {item.label}
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-black/55">
+                          {item.text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {current.lab && (
+                <div
+                  className="mt-9 rounded-[2rem] p-6 text-white md:p-7"
+                  style={{ backgroundColor: '#342722' }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-white/50">
+                        {current.lab.title}
+                      </p>
+                      <h2 className="mt-2 text-xl font-black">
+                        {current.lab.question}
+                      </h2>
+                    </div>
+
+                    <span
+                      className="rounded-full px-3 py-1 text-xs font-black"
+                      style={{ backgroundColor: ACCENT }}
+                    >
+                      +{LAB_XP} XP
+                    </span>
+                  </div>
+
+                  <div className="mt-6 grid gap-3 md:grid-cols-3">
+                    {current.lab.answers.map((answer) => {
+                      const chosen = labAnswers[step] === answer;
+                      const correct = answer === current.lab?.correct;
+
+                      return (
+                        <button
+                          key={answer}
+                          disabled={!!labAnswers[step]}
+                          onClick={() => chooseLab(answer)}
+                          className={`rounded-2xl border p-4 text-left text-sm font-bold transition ${
+                            chosen && correct
+                              ? 'bg-white text-black'
+                              : chosen
+                                ? 'bg-white/10'
+                                : 'border-white/15 hover:border-white/40'
+                          }`}
+                        >
+                          {answer}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {labAnswers[step] && (
+                    <p className="mt-5 text-sm leading-6 text-white/65">
+                      {labAnswers[step] === current.lab.correct
+                        ? current.lab.explanation
+                        : 'Ce n’est pas le bon modèle. Observe bien la différence entre « ajouter » et « multiplier ». '}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {current.projects && (
+                <div className="mt-8 space-y-4">
+                  {current.projects.map((project) => (
                     <div
                       key={project.specialite}
-                      className="rounded-3xl border border-black/10 bg-[#fafaf8] p-6"
+                      className="rounded-[2rem] border border-black/10 bg-[#FFFDFB] p-6"
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex flex-wrap items-start justify-between gap-4">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-[0.18em] text-black/40">
+                          <span
+                            className="text-xs font-black uppercase tracking-[0.18em]"
+                            style={{ color: ACCENT }}
+                          >
                             {project.specialite}
-                          </p>
+                          </span>
 
-                          <h2 className="mt-2 text-2xl font-bold">
+                          <h2 className="mt-2 text-2xl font-black">
                             {project.topic}
                           </h2>
                         </div>
 
                         <div className="flex gap-2">
-                          <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium">
+                          <span className="rounded-full bg-[#F4E8E2] px-3 py-1 text-xs font-bold">
                             {project.duration}
                           </span>
-
-                          <span className="rounded-full bg-black px-3 py-1 text-xs font-medium text-white">
+                          <span
+                            className="rounded-full px-3 py-1 text-xs font-bold text-white"
+                            style={{ backgroundColor: ACCENT }}
+                          >
                             {project.difficulty}
                           </span>
                         </div>
                       </div>
 
-                      <p className="mt-5 text-sm leading-6 text-black/65">
+                      <p className="mt-5 text-sm leading-6 text-black/60">
                         {project.desc}
                       </p>
 
-                      <div className="mt-5 border-t border-black/10 pt-5">
-                        <p className="text-xs font-bold uppercase tracking-[0.15em] text-black/40">
+                      <div className="mt-5 rounded-2xl bg-[#F8F3EF] p-4">
+                        <p
+                          className="text-xs font-black uppercase tracking-wider"
+                          style={{ color: ACCENT }}
+                        >
                           Livrable attendu
                         </p>
-
-                        <p className="mt-2 text-sm font-medium leading-6">
+                        <p className="mt-2 text-sm font-semibold leading-6">
                           {project.livrable}
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
+              )}
+
+              <div className="mt-10 flex items-center justify-between border-t border-black/10 pt-6">
+                <button
+                  disabled={step === 0}
+                  onClick={() => setStep((v) => Math.max(0, v - 1))}
+                  className="rounded-full border border-black/15 bg-white px-5 py-3 text-sm font-bold disabled:opacity-25"
+                >
+                  ← Précédent
+                </button>
+
+                <button
+                  onClick={nextStep}
+                  className="rounded-full px-6 py-3 text-sm font-black text-white"
+                  style={{ backgroundColor: ACCENT }}
+                >
+                  {lastStep ? 'Passer au quiz →' : 'Continuer →'}
+                </button>
               </div>
-            ) : (
-              <>
-                <p className="mt-8 max-w-3xl text-lg leading-8 text-black/70">
-                  {current.content}
+            </article>
+
+            {/* COLONNE LATÉRALE */}
+            <aside className="space-y-4">
+              <div
+                className="rounded-[2rem] p-6 text-white"
+                style={{ backgroundColor: ACCENT }}
+              >
+                <p className="text-xs font-black uppercase tracking-wider text-white/60">
+                  Le réflexe
                 </p>
-
-                {current.details && (
-                  <div className="mt-8 grid gap-4 md:grid-cols-3">
-                    {current.details.map((detail) => (
-                      <div
-                        key={detail.h}
-                        className="rounded-2xl bg-[#f7f7f5] p-5"
-                      >
-                        <h2 className="font-bold">{detail.h}</h2>
-
-                        <p className="mt-3 text-sm leading-6 text-black/60">
-                          {detail.p}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {current.details && (
-                  <button
-                    onClick={() => setOpenLesson(!openLesson)}
-                    className="mt-7 text-sm font-semibold underline underline-offset-4"
-                  >
-                    {openLesson
-                      ? 'Réduire la notion'
-                      : 'Approfondir la notion'}
-                  </button>
-                )}
-
-                {openLesson && current.deep && (
-                  <div className="mt-6 space-y-4">
-                    {current.deep.map((item) => (
-                      <div
-                        key={item.label}
-                        className="rounded-2xl border border-black/10 bg-[#fafaf8] p-5"
-                      >
-                        <p className="text-xs font-bold uppercase tracking-[0.15em] text-black/40">
-                          {item.label}
-                        </p>
-
-                        <p className="mt-3 text-sm leading-6 text-black/65">
-                          {item.text}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* MINI-LAB 1 */}
-            {current.hasLab && (
-              <div className="mt-10 rounded-3xl border border-black/10 bg-black p-6 text-white md:p-7">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
-                      Mini-Lab
-                    </p>
-
-                    <h2 className="mt-2 text-xl font-bold">
-                      Comment évolue une suite arithmétique ?
-                    </h2>
-                  </div>
-
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
-                    +{LAB_XP} XP
-                  </span>
-                </div>
-
-                <p className="mt-5 text-sm leading-6 text-white/65">
-                  Pour passer d’un terme au suivant, que fait-on ?
+                <p className="mt-3 text-xl font-black">
+                  Ajouter ou multiplier ?
                 </p>
-
-                <div className="mt-5 grid gap-3 md:grid-cols-2">
-                  {['On ajoute (+ r)', 'On multiplie (× q)'].map(
-                    (answer) => {
-                      const correct =
-                        answer === 'On ajoute (+ r)';
-                      const selected = lab1Ans === answer;
-
-                      return (
-                        <button
-                          key={answer}
-                          disabled={!!lab1Ans}
-                          onClick={() => handleLab1(answer)}
-                          className={`rounded-2xl border p-4 text-left text-sm transition ${
-                            selected
-                              ? correct
-                                ? 'border-white bg-white text-black'
-                                : 'border-white/30 bg-white/10'
-                              : 'border-white/15 hover:border-white/40'
-                          }`}
-                        >
-                          {answer}
-                        </button>
-                      );
-                    }
-                  )}
-                </div>
-
-                {lab1Ans && (
-                  <p className="mt-4 text-sm text-white/70">
-                    {lab1Ans === 'On ajoute (+ r)'
-                      ? 'Correct : une suite arithmétique ajoute toujours la même raison r.'
-                      : 'Pas tout à fait : la multiplication par un coefficient constant caractérise une suite géométrique.'}
-                  </p>
-                )}
+                <p className="mt-3 text-sm leading-6 text-white/70">
+                  C’est la première question à te poser face à une
+                  situation d’évolution.
+                </p>
               </div>
-            )}
 
-            {/* MINI-LAB 2 */}
-            {current.hasLab2 && (
-              <div className="mt-10 rounded-3xl border border-black/10 bg-black p-6 text-white md:p-7">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
-                      Mini-Lab
-                    </p>
-
-                    <h2 className="mt-2 text-xl font-bold">
-                      Une hausse de 5 %
-                    </h2>
-                  </div>
-
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
-                    +{LAB_XP} XP
-                  </span>
-                </div>
-
-                <p className="mt-5 text-sm leading-6 text-white/65">
-                  Quel coefficient multiplicateur correspond à une
-                  hausse de 5 % ?
+              <div className="rounded-[2rem] border border-black/10 bg-white p-6">
+                <p className="text-xs font-black uppercase tracking-wider text-black/40">
+                  À retenir
                 </p>
-
-                <div className="mt-5 grid gap-3 md:grid-cols-3">
-                  {['× 1,05', '× 0,05', '+ 5'].map((answer) => {
-                    const correct = answer === '× 1,05';
-                    const selected = lab2Ans === answer;
-
-                    return (
-                      <button
-                        key={answer}
-                        disabled={!!lab2Ans}
-                        onClick={() => handleLab2(answer)}
-                        className={`rounded-2xl border p-4 text-left text-sm transition ${
-                          selected
-                            ? correct
-                              ? 'border-white bg-white text-black'
-                              : 'border-white/30 bg-white/10'
-                            : 'border-white/15 hover:border-white/40'
-                        }`}
-                      >
-                        {answer}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {lab2Ans && (
-                  <p className="mt-4 text-sm text-white/70">
-                    {lab2Ans === '× 1,05'
-                      ? 'Correct : 100 % + 5 % = 105 %, donc × 1,05.'
-                      : 'Non : une hausse de 5 % correspond à un coefficient multiplicateur de 1,05.'}
-                  </p>
-                )}
+                <p className="mt-3 text-sm font-semibold leading-6">
+                  Arithmétique → + r
+                  <br />
+                  Géométrique → × q
+                </p>
               </div>
-            )}
 
-            {/* NOTE POUR LES SESSIONS LONGUES */}
-            {isLong && current.deep && (
-              <div className="mt-8 rounded-2xl border border-black/10 bg-[#fafaf8] p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.15em] text-black/40">
-                  Pour aller plus loin
+              <div className="rounded-[2rem] bg-[#F0E9DF] p-6">
+                <p className="text-xs font-black uppercase tracking-wider text-black/40">
+                  Ta spécialité
                 </p>
-
                 <p className="mt-3 text-sm leading-6 text-black/60">
-                  Cette partie permet d’approfondir la notion et de
-                  consolider les méthodes attendues au BTS.
+                  Les applications ne sont pas des exercices
+                  « décoratifs » : elles montrent pourquoi les maths
+                  sont utiles.
                 </p>
               </div>
-            )}
-
-            {/* NAVIGATION */}
-            <div className="mt-10 flex items-center justify-between border-t border-black/10 pt-6">
-              <button
-                disabled={step === 0}
-                onClick={() => {
-                  setOpenLesson(false);
-                  setStep((value) => Math.max(0, value - 1));
-                }}
-                className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold transition hover:border-black/30 disabled:cursor-not-allowed disabled:opacity-30"
-              >
-                ← Précédent
-              </button>
-
-              <button
-                onClick={nextStep}
-                className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/80"
-              >
-                {isLastStep
-                  ? 'Passer au quiz →'
-                  : 'Continuer →'}
-              </button>
-            </div>
-          </article>
+            </aside>
+          </div>
         </section>
       )}
 
       {/* QUIZ */}
       {view === 'quiz' && (
-        <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+        <section className="mx-auto max-w-4xl px-6 py-16 md:py-24">
           <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-black/40">
-              Validation · Question {quizIdx + 1} /{' '}
-              {QUIZ_QUESTIONS.length}
+            <p
+              className="text-xs font-black uppercase tracking-[0.2em]"
+              style={{ color: ACCENT }}
+            >
+              Validation · Question {quizIndex + 1} / {QUESTIONS.length}
             </p>
 
-            <h1 className="mt-5 text-4xl font-black tracking-tight md:text-5xl">
-              Vérifie tes acquis
+            <h1 className="mt-4 text-5xl font-black tracking-tight md:text-6xl">
+              Le défi final
             </h1>
 
-            <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-black/10">
-              <div
-                className="h-full rounded-full bg-black transition-all"
-                style={{
-                  width: `${
-                    ((quizIdx + 1) /
-                      QUIZ_QUESTIONS.length) *
-                    100
-                  }%`,
-                }}
-              />
-            </div>
+            <p className="mt-4 text-black/50">
+              Montre que tu sais reconnaître et utiliser les deux
+              modèles.
+            </p>
           </div>
 
-          <div className="mt-10 rounded-[2rem] border border-black/10 bg-white p-7 shadow-sm md:p-10">
-            <h2 className="text-xl font-bold leading-8 md:text-2xl">
+          <div className="mt-10 rounded-[2.5rem] bg-white p-7 shadow-sm md:p-10">
+            <h2 className="text-xl font-black leading-8 md:text-2xl">
               {question.q}
             </h2>
 
             <div className="mt-7 space-y-3">
               {question.options.map((option, index) => {
-                const selected = selectedAnswer === index;
                 const correct = index === question.correct;
-
-                let className =
-                  'border-black/10 bg-[#fafaf8] hover:border-black/30';
-
-                if (isLocked && correct) {
-                  className =
-                    'border-black bg-black text-white';
-                } else if (
-                  isLocked &&
-                  selected &&
-                  !correct
-                ) {
-                  className =
-                    'border-black/30 bg-black/5';
-                }
+                const chosen = selected === index;
 
                 return (
                   <button
                     key={option}
-                    disabled={isLocked}
-                    onClick={() => handleAnswer(index)}
-                    className={`w-full rounded-2xl border p-5 text-left text-sm font-medium transition ${className}`}
+                    disabled={locked}
+                    onClick={() => answerQuiz(index)}
+                    className={`w-full rounded-2xl border p-5 text-left text-sm font-bold transition ${
+                      locked && correct
+                        ? 'border-transparent text-white'
+                        : locked && chosen
+                          ? 'border-black/20 bg-[#F4E8E2]'
+                          : 'border-black/10 bg-[#FFFDFB] hover:border-black/30'
+                    }`}
+                    style={
+                      locked && correct
+                        ? { backgroundColor: ACCENT }
+                        : undefined
+                    }
                   >
                     {option}
                   </button>
@@ -789,32 +854,35 @@ export default function SuitesPage() {
               })}
             </div>
 
-            {isLocked && (
-              <div className="mt-7 rounded-2xl bg-[#f7f7f5] p-5">
-                <p className="text-sm font-semibold">
-                  {selectedAnswer === question.correct
-                    ? 'Bonne réponse.'
-                    : 'À revoir.'}
+            {locked && (
+              <div className="mt-7 rounded-3xl bg-[#F8F3EF] p-5">
+                <p
+                  className="font-black"
+                  style={{ color: ACCENT }}
+                >
+                  {selected === question.correct
+                    ? '✓ Bonne réponse'
+                    : 'À revoir'}
                 </p>
-
                 <p className="mt-2 text-sm leading-6 text-black/60">
                   {question.explanation}
                 </p>
               </div>
             )}
 
-            <div className="mt-8 flex justify-end">
-              {isLocked && (
+            {locked && (
+              <div className="mt-7 flex justify-end">
                 <button
                   onClick={nextQuestion}
-                  className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/80"
+                  className="rounded-full px-6 py-3 text-sm font-black text-white"
+                  style={{ backgroundColor: ACCENT }}
                 >
-                  {quizIdx === QUIZ_QUESTIONS.length - 1
+                  {quizIndex === QUESTIONS.length - 1
                     ? 'Voir mon bilan →'
                     : 'Question suivante →'}
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -823,97 +891,113 @@ export default function SuitesPage() {
       {view === 'resultat' && (
         <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
           <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-black/40">
+            <p
+              className="text-xs font-black uppercase tracking-[0.2em]"
+              style={{ color: ACCENT }}
+            >
               Chapitre terminé
             </p>
 
-            <h1 className="mt-5 text-5xl font-black tracking-tight md:text-7xl">
-              Bilan de fin de chapitre
+            <h1 className="mt-4 text-5xl font-black md:text-7xl">
+              Bien joué !
             </h1>
 
-            <p className="mx-auto mt-5 max-w-2xl text-black/55">
-              Les Suites Numériques
+            <p className="mt-4 text-black/50">
+              Tu viens de terminer le chapitre Les Suites.
             </p>
           </div>
 
           <div className="mt-12 grid gap-5 md:grid-cols-2">
-            <div className="rounded-[2rem] bg-black p-8 text-white">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">
+            <div
+              className="rounded-[2.5rem] p-8 text-white"
+              style={{ backgroundColor: ACCENT }}
+            >
+              <p className="text-xs font-black uppercase tracking-wider text-white/60">
                 Score
               </p>
-
-              <p className="mt-5 text-6xl font-black">
-                {score} / {QUIZ_QUESTIONS.length}
+              <p className="mt-4 text-6xl font-black">
+                {score} / {QUESTIONS.length}
               </p>
-
-              <p className="mt-4 text-sm text-white/55">
-                {score === QUIZ_QUESTIONS.length
-                  ? 'Chapitre parfaitement maîtrisé.'
-                  : 'Les erreurs sont une étape normale de l’apprentissage.'}
+              <p className="mt-3 text-sm text-white/70">
+                {score === QUESTIONS.length
+                  ? 'Toutes les notions essentielles sont maîtrisées.'
+                  : 'Les erreurs permettent de savoir ce qu’il faut encore travailler.'}
               </p>
             </div>
 
-            <div className="rounded-[2rem] border border-black/10 bg-white p-8">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-black/40">
+            <div className="rounded-[2.5rem] bg-white p-8 shadow-sm">
+              <p
+                className="text-xs font-black uppercase tracking-wider"
+                style={{ color: ACCENT }}
+              >
                 XP gagné
               </p>
 
-              <p className="mt-5 text-6xl font-black">
+              <p className="mt-4 text-6xl font-black">
                 {totalXP}
               </p>
 
-              <p className="mt-4 text-sm text-black/50">
+              <p className="mt-3 text-sm text-black/50">
                 Quiz : {score * 100} XP · Mini-Labs : {bonusXP} XP
               </p>
             </div>
           </div>
 
-          <div className="mt-6 rounded-[2rem] border border-black/10 bg-white p-8">
-            <h2 className="text-2xl font-bold">
-              Compétences travaillées
-            </h2>
+          <div className="mt-6 rounded-[2.5rem] bg-white p-8 shadow-sm">
+            <p
+              className="text-xs font-black uppercase tracking-wider"
+              style={{ color: ACCENT }}
+            >
+              Ce que tu sais maintenant faire
+            </p>
 
             <div className="mt-6 grid gap-3 md:grid-cols-4">
               {[
-                'Modélisation',
-                'Calcul',
-                'Pourcentages',
-                'Interprétation',
-              ].map((skill) => (
+                'Identifier un modèle',
+                'Calculer un terme',
+                'Utiliser un coefficient',
+                'Interpréter un résultat',
+              ].map((item) => (
                 <div
-                  key={skill}
-                  className="rounded-2xl bg-[#f7f7f5] p-4 text-sm font-semibold"
+                  key={item}
+                  className="rounded-2xl bg-[#F8F3EF] p-4 text-sm font-bold"
                 >
-                  {skill}
+                  ✓ {item}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mt-6 rounded-[2rem] border border-black/10 bg-[#fafaf8] p-8">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-black/40">
-              Pourquoi c’est utile ?
+          <div
+            className="mt-6 rounded-[2.5rem] p-8"
+            style={{ backgroundColor: '#F4D5C7' }}
+          >
+            <p
+              className="text-xs font-black uppercase tracking-wider"
+              style={{ color: ACCENT }}
+            >
+              🌍 Et dans ta spécialité ?
             </p>
 
-            <p className="mt-4 max-w-3xl text-base leading-7 text-black/65">
-              Les suites servent à modéliser des phénomènes
-              d’évolution : données économiques en SES, croissance
-              biologique en SVT, phénomènes démographiques en HGGSP,
-              mais aussi de nombreuses situations informatiques.
+            <p className="mt-4 max-w-3xl text-base font-semibold leading-7">
+              Les suites permettent de modéliser l’inflation en SES,
+              la croissance d’une population en SVT ou l’évolution
+              démographique en HGGSP.
             </p>
           </div>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <button
               onClick={restart}
-              className="rounded-full border border-black/15 bg-white px-6 py-3 text-sm font-semibold transition hover:border-black/40"
+              className="rounded-full border border-black/15 bg-white px-6 py-3 text-sm font-black"
             >
               Refaire le chapitre
             </button>
 
             <Link
               href="/"
-              className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/80"
+              className="rounded-full px-6 py-3 text-sm font-black text-white"
+              style={{ backgroundColor: ACCENT }}
             >
               Choisir un autre chapitre →
             </Link>
