@@ -1,0 +1,23 @@
+{"timestamp":"00:00:03.354","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:10.664","source":"Server","level":"LOG","message":"○ Compiling /_not-found/page ..."}
+{"timestamp":"00:00:19.928","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:01:26.847","source":"Server","level":"LOG","message":"✓ Compiled in 77ms"}
+{"timestamp":"00:01:57.577","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:02:20.348","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:20.352","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:21.657","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:21.659","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:21.719","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:21.722","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:21.796","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:21.797","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:22.164","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:22.168","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:22.686","source":"Browser","level":"ERROR","message":"Uncaught Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:02:22.687","source":"Server","level":"ERROR","message":"[browser] \"\\u001b[31mUncaught Error: The default export is not a React Component in \\\"/page\\\"\\u001b[39m\""}
+{"timestamp":"00:03:05.284","source":"Server","level":"LOG","message":"✓ Compiled in 226ms"}
+{"timestamp":"00:03:05.646","source":"Server","level":"WARN","message":"⚠ Fast Refresh had to perform a full reload when ./node_modules/next/dist/shared/lib/router/router.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload"}
+{"timestamp":"00:03:09.384","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:03:39.724","source":"Server","level":"LOG","message":"✓ Compiled in 44ms"}
+{"timestamp":"00:04:30.431","source":"Browser","level":"WARN","message":"Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\"smooth\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior"}
+{"timestamp":"00:04:30.497","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mDetected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\\\"smooth\\\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior\\u001b[39m\""}
