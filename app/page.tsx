@@ -219,22 +219,6 @@ export default function Home() {
               flexWrap: 'wrap',
             }}
           >
-            <Link
-              href="/suites"
-              style={{
-                background: '#C65D3A',
-                color: '#fff',
-                padding: '14px 21px',
-                borderRadius: 7,
-                textDecoration: 'none',
-                fontFamily: 'Arial, sans-serif',
-                fontWeight: 700,
-                fontSize: 14,
-              }}
-            >
-              Commencer le chapitre 1 →
-            </Link>
-
             <a
               href="#parcours"
               style={{
@@ -412,87 +396,104 @@ export default function Home() {
         </div>
 
         <div>
-          {chapters.map((chapter) => (
-            <div
-              key={chapter.number}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '65px 1fr auto',
-                gap: 20,
-                alignItems: 'center',
-                padding: '21px 0',
-                borderTop: '1px solid #E0D9D1',
-              }}
-            >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+              gap: 18,
+            }}
+          >
+            {chapters.map((chapter) => (
               <div
+                key={chapter.number}
                 style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: 9,
-                  background: chapter.light,
-                  color: chapter.color,
+                  background: '#FFFFFF',
+                  border: `1px solid ${chapter.light}`,
+                  borderTop: `5px solid ${chapter.color}`,
+                  borderRadius: 14,
+                  padding: 24,
+                  minHeight: 205,
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: 'Arial, sans-serif',
-                  fontSize: 13,
-                  fontWeight: 800,
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
                 }}
               >
-                {chapter.number}
+                <div>
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 10,
+                      background: chapter.light,
+                      color: chapter.color,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontFamily: 'Arial, sans-serif',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      marginBottom: 18,
+                    }}
+                  >
+                    {chapter.number}
+                  </div>
+
+                  <h3
+                    style={{
+                      margin: '0 0 7px',
+                      fontSize: 22,
+                      lineHeight: 1.15,
+                    }}
+                  >
+                    {chapter.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      margin: 0,
+                      color: '#777',
+                      fontFamily: 'Arial, sans-serif',
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {chapter.subtitle}
+                  </p>
+                </div>
+
+                <div style={{ marginTop: 22 }}>
+                  {chapter.available ? (
+                    <Link
+                      href={chapter.href}
+                      style={{
+                        color: chapter.color,
+                        textDecoration: 'none',
+                        fontFamily: 'Arial, sans-serif',
+                        fontSize: 13,
+                        fontWeight: 800,
+                      }}
+                    >
+                      Commencer le chapitre →
+                    </Link>
+                  ) : (
+                    <span
+                      style={{
+                        color: '#999',
+                        fontFamily: 'Arial, sans-serif',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                      }}
+                    >
+                      À venir
+                    </span>
+                  )}
+                </div>
               </div>
-
-              <div>
-                <h3
-                  style={{
-                    margin: '0 0 5px',
-                    fontSize: 21,
-                  }}
-                >
-                  {chapter.title}
-                </h3>
-
-                <p
-                  style={{
-                    margin: 0,
-                    color: '#777',
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: 13,
-                  }}
-                >
-                  {chapter.subtitle}
-                </p>
-              </div>
-
-              {chapter.available ? (
-                <Link
-                  href={chapter.href}
-                  style={{
-                    color: chapter.color,
-                    textDecoration: 'none',
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: 13,
-                    fontWeight: 800,
-                  }}
-                >
-                  {chapter.number === '01' ? 'Ouvrir →' : 'Commencer le chapitre →'}
-                </Link>
-              ) : (
-                <span
-                  style={{
-                    color: '#999',
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  À venir
-                </span>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
