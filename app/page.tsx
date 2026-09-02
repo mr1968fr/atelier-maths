@@ -475,7 +475,7 @@ export default function Home() {
                     fontWeight: 800,
                   }}
                 >
-                  Ouvrir →
+                  {chapter.number === '01' ? 'Ouvrir →' : 'Commencer le chapitre →'}
                 </Link>
               ) : (
                 <span
