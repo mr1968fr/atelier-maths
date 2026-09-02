@@ -17,7 +17,7 @@ const chapters = [
     color: '#3976A8',
     light: '#EAF2F8',
     href: '/derivation',
-    available: false,
+    available: true,
   },
   {
     number: '03',
