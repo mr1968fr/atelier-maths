@@ -79,6 +79,12 @@ export default function HomePage() {
           <Link className="button button--ink" href="/evaluations">Voir les 12 QCM →</Link>
         </section>
 
+        <section className="coaching-home page-width">
+          <div><p className="overline">Cours en ligne</p><h2>Travailler en petit groupe.</h2><p>Un cycle de huit semaines pour consolider les bases, suivre une méthode régulière et préparer l’épreuve anticipée.</p></div>
+          <dl><div><dt>4–6</dt><dd>élèves</dd></div><div><dt>1 h 30</dt><dd>par semaine</dd></div><div><dt>8</dt><dd>semaines</dd></div></dl>
+          <Link href="/coaching">Découvrir l’accompagnement →</Link>
+        </section>
+
         <section className="how-section" id="mode-emploi">
           <div className="page-width how-section__grid">
             <div>
@@ -110,7 +116,7 @@ export default function HomePage() {
       <footer className="site-footer site-footer--home">
         <div><strong>L’Atelier des Maths</strong><span>Manuel numérique · Première générale</span></div>
         <nav aria-label="Pied de page">
-          <a href="#sommaire">Sommaire</a><Link href="/epreuve-anticipee">Épreuve anticipée</Link><Link href="/evaluations">Évaluations</Link><Link href="/suites">Commencer</Link>
+          <a href="#sommaire">Sommaire</a><Link href="/epreuve-anticipee">Épreuve anticipée</Link><Link href="/evaluations">Évaluations</Link><Link href="/coaching">Cours en ligne</Link>
         </nav>
       </footer>
     </>
