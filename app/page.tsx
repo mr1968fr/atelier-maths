@@ -1,794 +1,95 @@
 import Link from 'next/link';
+import SiteHeader from '@/components/SiteHeader';
+import CourseGrid from '@/components/CourseGrid';
+import { chapters } from '@/lib/chapters';
 
-const chapters = [
-  {
-    number: '01',
-    title: 'Les suites',
-    subtitle: 'Modéliser une évolution',
-    color: '#C65D3A',
-    light: '#F7E9E3',
-    href: '/suites',
-    available: true,
-  },
-  {
-    number: '02',
-    title: 'Dérivation',
-    subtitle: 'Mesurer comment ça change',
-    color: '#3976A8',
-    light: '#EAF2F8',
-    href: '/derivation',
-    available: true,
-  },
-  {
-    number: '03',
-    title: 'Exponentielle',
-    subtitle: 'Comprendre les croissances',
-    color: '#7957A8',
-    light: '#F1ECF7',
-    href: '/exponentielle',
-    available: true,
-  },
-  {
-    number: '04',
-    title: 'Probabilités',
-    subtitle: 'Décider dans l’incertitude',
-    color: '#4D8A68',
-    light: '#EAF4EE',
-    href: '/probabilites',
-    available: false,
-  },
-  {
-    number: '05',
-    title: 'Statistiques',
-    subtitle: 'Lire et interpréter les données',
-    color: '#277B86',
-    light: '#E8F4F5',
-    href: '/statistiques',
-    available: false,
-  },
-  {
-    number: '06',
-    title: 'Algorithmique',
-    subtitle: 'Faire parler les données',
-    color: '#B08328',
-    light: '#F8F1DF',
-    href: '/algorithmique',
-    available: false,
-  },
-];
-
-const specialties = [
-  {
-    name: 'SES',
-    title: 'Économie & société',
-    text: 'Salaires, prix, inflation, croissance et décisions.',
-    color: '#3976A8',
-    light: '#EAF2F8',
-  },
-  {
-    name: 'SVT',
-    title: 'Le vivant',
-    text: 'Populations, croissance, évolution et modèles.',
-    color: '#4D8A68',
-    light: '#EAF4EE',
-  },
-  {
-    name: 'HGGSP',
-    title: 'Monde contemporain',
-    text: 'Démographie, territoires et données historiques.',
-    color: '#7957A8',
-    light: '#F1ECF7',
-  },
-];
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        background: '#FAF8F5',
-        color: '#262626',
-        fontFamily: 'Georgia, "Times New Roman", serif',
-      }}
-    >
-
-      {/* NAVIGATION */}
-
-      <nav
-        style={{
-          height: 72,
-          padding: '0 5vw',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: '1px solid #E5DED6',
-          background: '#FAF8F5',
-        }}
-      >
-        <Link
-          href="/"
-          style={{
-            color: '#262626',
-            textDecoration: 'none',
-            fontSize: 19,
-            fontWeight: 700,
-          }}
-        >
-          L’Atelier des Maths
-        </Link>
-
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 25,
-            fontFamily: 'Arial, sans-serif',
-            fontSize: 13,
-          }}
-        >
-          <a
-            href="#parcours"
-            style={{ color: '#555', textDecoration: 'none' }}
-          >
-            Parcours
-          </a>
-
-          <a
-            href="#specialites"
-            style={{ color: '#555', textDecoration: 'none' }}
-          >
-            Autres spécialités
-          </a>
-
-          <Link
-            href="/suites"
-            style={{
-              background: '#C65D3A',
-              color: '#fff',
-              padding: '10px 17px',
-              borderRadius: 7,
-              textDecoration: 'none',
-              fontWeight: 700,
-            }}
-          >
-            Commencer
-          </Link>
-        </div>
-      </nav>
-
-      {/* HERO */}
-
-      <section
-        style={{
-          maxWidth: 1240,
-          margin: '0 auto',
-          padding: '80px 5vw',
-          display: 'grid',
-          gridTemplateColumns: '1.3fr 0.7fr',
-          gap: 60,
-          alignItems: 'center',
-        }}
-      >
-        <div>
-          <div
-            style={{
-              color: '#C65D3A',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: 20,
-            }}
-          >
-            Mathématiques · Première
+    <>
+      <SiteHeader />
+      <main>
+        <section className="home-hero">
+          <div className="home-hero__edition">
+            <span>Édition numérique</span>
+            <strong>2026</strong>
           </div>
-
-          <h1
-            style={{
-              margin: 0,
-              fontSize: 'clamp(48px, 7vw, 80px)',
-              lineHeight: 0.98,
-              letterSpacing: '-0.05em',
-            }}
-          >
-            Les maths dont
-            <br />
-            <span style={{ color: '#C65D3A' }}>
-              tu as besoin.
-            </span>
-          </h1>
-
-          <p
-            style={{
-              maxWidth: 650,
-              margin: '28px 0 34px',
-              color: '#625E59',
-              fontSize: 20,
-              lineHeight: 1.55,
-            }}
-          >
-            Comprendre les notions essentielles, les utiliser dans
-            des situations concrètes et progresser à ton rythme.
-          </p>
-
-          <div
-            style={{
-              display: 'flex',
-              gap: 12,
-              flexWrap: 'wrap',
-            }}
-          >
-            <a
-              href="#parcours"
-              style={{
-                background: '#fff',
-                color: '#444',
-                padding: '14px 21px',
-                borderRadius: 7,
-                border: '1px solid #CEC6BD',
-                textDecoration: 'none',
-                fontFamily: 'Arial, sans-serif',
-                fontWeight: 700,
-                fontSize: 14,
-              }}
-            >
-              Voir le parcours
-            </a>
+          <div className="home-hero__content">
+            <p className="overline">Mathématiques · Première générale</p>
+            <h1>Le cours, les méthodes,<br /><em>la pratique.</em></h1>
+            <p>
+              Un manuel numérique pour comprendre les notions du programme,
+              s’entraîner avec une correction immédiate et utiliser les mathématiques
+              dans des situations concrètes.
+            </p>
+            <div className="home-hero__actions">
+              <a className="button button--paper" href="#sommaire">Voir le sommaire</a>
+              <Link className="text-link" href="/suites">Commencer au chapitre 1 →</Link>
+            </div>
           </div>
-        </div>
-
-        <div
-          style={{
-            minHeight: 300,
-            padding: 34,
-            borderRadius: 18,
-            background: '#F7E9E3',
-            border: '1px solid #ECD5CC',
-          }}
-        >
-          <div
-            style={{
-              color: '#9A452C',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-              marginBottom: 22,
-            }}
-          >
-            TON MANUEL NUMÉRIQUE
+          <div className="home-hero__figure" aria-hidden="true">
+            <svg viewBox="0 0 380 310" role="img">
+              <g fill="none" stroke="currentColor">
+                <path d="M24 270H356M48 292V24" strokeWidth="2" />
+                <path d="M48 244 C90 242 117 235 145 215 C188 184 209 126 253 78 C277 52 304 38 344 31" strokeWidth="5" />
+                <path d="M48 246 C115 236 156 214 202 170 C245 129 280 89 344 49" strokeWidth="1.5" strokeDasharray="7 7" opacity=".5" />
+                <circle cx="202" cy="170" r="6" fill="currentColor" stroke="none" />
+                <path d="M202 170L202 270M202 170L48 170" strokeWidth="1" strokeDasharray="4 5" opacity=".55" />
+              </g>
+              <text x="210" y="192" fill="currentColor">variation</text>
+              <text x="314" y="291" fill="currentColor">x</text>
+              <text x="29" y="38" fill="currentColor">y</text>
+            </svg>
           </div>
+        </section>
 
-          <div
-            style={{
-              fontSize: 31,
-              lineHeight: 1.15,
-              fontWeight: 700,
-            }}
-          >
-            Comprendre.
-            <br />
-            S’entraîner.
-            <br />
-            Utiliser.
+        <section className="manual-promise page-width" aria-label="Présentation du manuel">
+          <div><span>01</span><strong>Comprendre</strong><p>Un cours structuré, des définitions précises et des exemples résolus.</p></div>
+          <div><span>02</span><strong>S’entraîner</strong><p>Des questions courtes avec indice et correction détaillée.</p></div>
+          <div><span>03</span><strong>Mobiliser</strong><p>Une mission liée aux sciences, aux données ou aux sciences sociales.</p></div>
+        </section>
+
+        <section className="toc-section page-width" id="sommaire">
+          <header className="toc-section__header">
+            <div><p className="overline">Sommaire</p><h2>Six chapitres, un même parcours.</h2></div>
+            <p>Chaque chapitre associe cours, méthodes, automatismes et problème d’application. La progression est conservée sur cet appareil.</p>
+          </header>
+          <CourseGrid chapters={chapters} />
+        </section>
+
+        <section className="how-section" id="mode-emploi">
+          <div className="page-width how-section__grid">
+            <div>
+              <p className="overline">Mode d’emploi</p>
+              <h2>Travailler comme avec un manuel,<br />avec les outils du numérique.</h2>
+            </div>
+            <ol>
+              <li><span>1</span><div><strong>Lire une leçon</strong><p>Repère les définitions, les formules et la méthode. Reproduis les exemples sur papier.</p></div></li>
+              <li><span>2</span><div><strong>Tester sa compréhension</strong><p>Réponds aux exercices sans regarder la correction, puis analyse chaque erreur.</p></div></li>
+              <li><span>3</span><div><strong>Résoudre la mission</strong><p>Rédige une solution complète : modèle, calculs, unités et conclusion.</p></div></li>
+            </ol>
           </div>
+        </section>
 
-          <div
-            style={{
-              marginTop: 80,
-              color: '#8B4C3A',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 12,
-              lineHeight: 1.5,
-            }}
-          >
-            Maths × réel
-            <br />
-            Maths × spécialités
+        <section className="teacher-note page-width">
+          <div className="teacher-note__margin">À propos</div>
+          <div>
+            <p className="overline">Une ligne éditoriale claire</p>
+            <h2>Des mathématiques écrites pour la classe.</h2>
+            <p>
+              Les chapitres suivent le vocabulaire et les attendus de Première. Les outils de Terminale
+              ne sont pas utilisés avant leur introduction : par exemple, les seuils exponentiels sont
+              estimés graphiquement ou numériquement, sans faire intervenir prématurément le logarithme.
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* POURQUOI */}
-
-      <section
-        style={{
-          padding: '50px 5vw',
-          background: '#262626',
-          color: '#fff',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1240,
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: '0.7fr 1.3fr',
-            gap: 60,
-            alignItems: 'center',
-          }}
-        >
-          <div
-            style={{
-              color: '#D9A08E',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Pourquoi ces maths ?
-          </div>
-
-          <p
-            style={{
-              margin: 0,
-              color: '#F0ECE8',
-              fontSize: 21,
-              lineHeight: 1.55,
-            }}
-          >
-            Parce qu’une formule devient beaucoup plus intéressante
-            quand on comprend{' '}
-            <strong>ce qu’elle permet de faire</strong>.
-            Chaque notion est reliée à une situation, une autre
-            spécialité ou un problème à résoudre.
-          </p>
-        </div>
-      </section>
-
-      {/* PARCOURS */}
-
-      <section
-        id="parcours"
-        style={{
-          maxWidth: 1240,
-          margin: '0 auto',
-          padding: '80px 5vw',
-        }}
-      >
-        <div
-          style={{
-            marginBottom: 42,
-          }}
-        >
-          <div
-            style={{
-              color: '#777',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: 14,
-            }}
-          >
-            Le parcours
-          </div>
-
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 40,
-              lineHeight: 1.08,
-              letterSpacing: '-0.035em',
-            }}
-          >
-            Six chapitres.
-            <br />
-            Un fil conducteur.
-          </h2>
-
-          <p
-            style={{
-              maxWidth: 620,
-              color: '#666',
-              fontSize: 17,
-              lineHeight: 1.6,
-              marginTop: 18,
-            }}
-          >
-            Comprendre une notion, la pratiquer, puis la mobiliser
-            dans une situation qui a du sens.
-          </p>
-        </div>
-
-        <div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-              gap: 18,
-            }}
-          >
-            {chapters.map((chapter) => (
-              <div
-                key={chapter.number}
-                style={{
-                  background: '#FFFFFF',
-                  border: `1px solid ${chapter.light}`,
-                  borderTop: `5px solid ${chapter.color}`,
-                  borderRadius: 14,
-                  padding: 24,
-                  minHeight: 205,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 10,
-                      background: chapter.light,
-                      color: chapter.color,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: 13,
-                      fontWeight: 800,
-                      marginBottom: 18,
-                    }}
-                  >
-                    {chapter.number}
-                  </div>
-
-                  <h3
-                    style={{
-                      margin: '0 0 7px',
-                      fontSize: 22,
-                      lineHeight: 1.15,
-                    }}
-                  >
-                    {chapter.title}
-                  </h3>
-
-                  <p
-                    style={{
-                      margin: 0,
-                      color: '#777',
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: 13,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {chapter.subtitle}
-                  </p>
-                </div>
-
-                <div style={{ marginTop: 22 }}>
-                  {chapter.available ? (
-                    <Link
-                      href={chapter.href}
-                      style={{
-                        color: chapter.color,
-                        textDecoration: 'none',
-                        fontFamily: 'Arial, sans-serif',
-                        fontSize: 13,
-                        fontWeight: 800,
-                      }}
-                    >
-                      Commencer le chapitre →
-                    </Link>
-                  ) : (
-                    <span
-                      style={{
-                        color: '#999',
-                        fontFamily: 'Arial, sans-serif',
-                        fontSize: 11,
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em',
-                      }}
-                    >
-                      À venir
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SPÉCIALITÉS */}
-
-      <section
-        id="specialites"
-        style={{
-          padding: '75px 5vw 85px',
-          background: '#F0ECE7',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1240,
-            margin: '0 auto',
-          }}
-        >
-          <div
-            style={{
-              color: '#777',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: 14,
-            }}
-          >
-            Maths × autres spécialités
-          </div>
-
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 40,
-              lineHeight: 1.08,
-              letterSpacing: '-0.035em',
-            }}
-          >
-            Les maths ne vivent pas
-            <br />
-            toutes seules.
-          </h2>
-
-          <p
-            style={{
-              maxWidth: 650,
-              color: '#666',
-              fontSize: 17,
-              lineHeight: 1.6,
-              margin: '18px 0 40px',
-            }}
-          >
-            Les situations proposées reprennent des questions que
-            tu peux rencontrer en SES, en SVT ou en HGGSP.
-          </p>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: 18,
-            }}
-          >
-            {specialties.map((specialty) => (
-              <div
-                key={specialty.name}
-                style={{
-                  minHeight: 190,
-                  padding: 27,
-                  background: '#fff',
-                  borderTop: `4px solid ${specialty.color}`,
-                  borderRadius: 11,
-                }}
-              >
-                <div
-                  style={{
-                    display: 'inline-block',
-                    padding: '7px 11px',
-                    marginBottom: 18,
-                    borderRadius: 6,
-                    background: specialty.light,
-                    color: specialty.color,
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: 12,
-                    fontWeight: 800,
-                  }}
-                >
-                  {specialty.name}
-                </div>
-
-                <h3
-                  style={{
-                    margin: '0 0 10px',
-                    fontSize: 20,
-                  }}
-                >
-                  {specialty.title}
-                </h3>
-
-                <p
-                  style={{
-                    margin: 0,
-                    color: '#666',
-                    fontSize: 15,
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {specialty.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MÉTHODE */}
-
-      <section
-        style={{
-          maxWidth: 1240,
-          margin: '0 auto',
-          padding: '80px 5vw',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 45,
-        }}
-      >
-        <div>
-          <div
-            style={{
-              color: '#C65D3A',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 12,
-              fontWeight: 800,
-            }}
-          >
-            01
-          </div>
-
-          <h3 style={{ fontSize: 25, margin: '12px 0 10px' }}>
-            Comprendre
-          </h3>
-
-          <p
-            style={{
-              margin: 0,
-              color: '#666',
-              fontSize: 15,
-              lineHeight: 1.6,
-            }}
-          >
-            Une notion expliquée clairement, avec un exemple
-            et l’essentiel à retenir.
-          </p>
-        </div>
-
-        <div>
-          <div
-            style={{
-              color: '#C65D3A',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 12,
-              fontWeight: 800,
-            }}
-          >
-            02
-          </div>
-
-          <h3 style={{ fontSize: 25, margin: '12px 0 10px' }}>
-            S’entraîner
-          </h3>
-
-          <p
-            style={{
-              margin: 0,
-              color: '#666',
-              fontSize: 15,
-              lineHeight: 1.6,
-            }}
-          >
-            Des exercices courts et des Mini-Labs pour vérifier
-            que tu sais réellement utiliser la notion.
-          </p>
-        </div>
-
-        <div>
-          <div
-            style={{
-              color: '#C65D3A',
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 12,
-              fontWeight: 800,
-            }}
-          >
-            03
-          </div>
-
-          <h3 style={{ fontSize: 25, margin: '12px 0 10px' }}>
-            Utiliser
-          </h3>
-
-          <p
-            style={{
-              margin: 0,
-              color: '#666',
-              fontSize: 15,
-              lineHeight: 1.6,
-            }}
-          >
-            Une mission inspirée d’un problème de SES, SVT
-            ou HGGSP, avec un livrable concret.
-          </p>
-        </div>
-      </section>
-
-      {/* CTA FINAL */}
-
-      <section
-        style={{
-          maxWidth: 1240,
-          margin: '0 auto 60px',
-          padding: '50px 6vw',
-          background: '#C65D3A',
-          color: '#fff',
-          borderRadius: 16,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 30,
-        }}
-      >
-        <div>
-          <div
-            style={{
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 11,
-              fontWeight: 800,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              opacity: 0.8,
-              marginBottom: 13,
-            }}
-          >
-            Chapitre 01 · Disponible maintenant
-          </div>
-
-          <h2
-            style={{
-              margin: 0,
-              color: '#fff',
-              fontSize: 37,
-              lineHeight: 1.1,
-            }}
-          >
-            Prêt à commencer
-            <br />
-            avec les suites ?
-          </h2>
-        </div>
-
-        <Link
-          href="/suites"
-          style={{
-            background: '#fff',
-            color: '#C65D3A',
-            padding: '15px 23px',
-            borderRadius: 7,
-            textDecoration: 'none',
-            fontFamily: 'Arial, sans-serif',
-            fontWeight: 800,
-            fontSize: 14,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          Ouvrir le chapitre →
-        </Link>
-      </section>
-
-      {/* FOOTER */}
-
-      <footer
-        style={{
-          padding: '28px 5vw 40px',
-          borderTop: '1px solid #E2DBD3',
-          textAlign: 'center',
-          color: '#888',
-          fontFamily: 'Arial, sans-serif',
-          fontSize: 12,
-        }}
-      >
-        L’Atelier des Maths · Première
+      <footer className="site-footer site-footer--home">
+        <div><strong>L’Atelier des Maths</strong><span>Manuel numérique · Première générale</span></div>
+        <nav aria-label="Pied de page">
+          <a href="#sommaire">Sommaire</a><a href="#mode-emploi">Mode d’emploi</a><Link href="/suites">Commencer</Link>
+        </nav>
       </footer>
-
-    </main>
+    </>
   );
 }
