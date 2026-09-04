@@ -1,0 +1,17 @@
+MISE À JOUR QCM — L'ATELIER DES MATHS
+
+1. Ouvrir dans GitHub Desktop le dépôt local atelier-maths.
+2. Menu Repository > Show in Explorer.
+3. Copier le contenu de ce dossier dans le dépôt atelier-maths.
+4. Accepter le remplacement des fichiers existants.
+5. Dans GitHub Desktop, vérifier la présence des nouveaux fichiers.
+6. Summary : Ajout des évaluations QCM à deux niveaux
+7. Cliquer sur Commit to main, puis Push origin.
+8. Render redéploiera automatiquement le site.
+
+Nouveautés :
+- 12 QCM : progressif et exigeant pour chacun des 6 chapitres
+- 8 questions par QCM, soit 96 questions
+- note sur 20 et correction détaillée après validation
+- meilleur score conservé sur l'appareil
+- pages responsive pour ordinateur, tablette et mobile

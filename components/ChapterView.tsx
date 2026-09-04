@@ -304,6 +304,18 @@ export default function ChapterView({ chapter }: { chapter: Chapter }) {
               <div><p className="overline">L’essentiel</p><h2>Ce que je retiens</h2></div>
               <ol>{chapter.recap.map((item, index) => <li key={item}><span>{index + 1}</span>{item}</li>)}</ol>
             </section>
+
+            <section className="chapter-evaluation-callout">
+              <div>
+                <p className="overline">Évaluation du chapitre</p>
+                <h2>Choisis ton niveau</h2>
+                <p>Huit questions, une note sur 20 et la correction complète après validation.</p>
+              </div>
+              <div>
+                <Link href={`/evaluations/${chapter.slug}/progressif`}><strong>Progressif</strong><span>Fondamentaux · 12 min →</span></Link>
+                <Link href={`/evaluations/${chapter.slug}/exigeant`}><strong>Exigeant</strong><span>Raisonnement · 20 min →</span></Link>
+              </div>
+            </section>
           </div>
         </div>
 

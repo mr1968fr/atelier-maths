@@ -56,6 +56,19 @@ export default function HomePage() {
           <CourseGrid chapters={chapters} />
         </section>
 
+        <section className="evaluation-promo page-width">
+          <div>
+            <p className="overline">Évaluations</p>
+            <h2>Prêt à vérifier tes acquis ?</h2>
+            <p>Pour chaque chapitre, choisis un QCM progressif ou un QCM exigeant. Tu obtiendras une note sur 20 et une correction détaillée à la fin.</p>
+          </div>
+          <div className="evaluation-promo__levels">
+            <span><strong>Progressif</strong>Fondamentaux · 12 min</span>
+            <span><strong>Exigeant</strong>Raisonnement · 20 min</span>
+          </div>
+          <Link className="button button--ink" href="/evaluations">Voir les 12 QCM →</Link>
+        </section>
+
         <section className="how-section" id="mode-emploi">
           <div className="page-width how-section__grid">
             <div>
@@ -87,7 +100,7 @@ export default function HomePage() {
       <footer className="site-footer site-footer--home">
         <div><strong>L’Atelier des Maths</strong><span>Manuel numérique · Première générale</span></div>
         <nav aria-label="Pied de page">
-          <a href="#sommaire">Sommaire</a><a href="#mode-emploi">Mode d’emploi</a><Link href="/suites">Commencer</Link>
+          <a href="#sommaire">Sommaire</a><a href="#mode-emploi">Mode d’emploi</a><Link href="/evaluations">Évaluations</Link><Link href="/suites">Commencer</Link>
         </nav>
       </footer>
     </>

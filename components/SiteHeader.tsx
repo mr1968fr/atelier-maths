@@ -30,6 +30,7 @@ export default function SiteHeader({ currentSlug }: { currentSlug?: string }) {
             </div>
           </div>
           <a href={currentSlug ? `/${currentSlug}#exercices` : '/#mode-emploi'}>S’entraîner</a>
+          <Link href="/evaluations">Évaluations</Link>
         </nav>
 
         <details className="mobile-nav">
@@ -45,6 +46,7 @@ export default function SiteHeader({ currentSlug }: { currentSlug?: string }) {
                 Chapitre {chapter.number} · {chapter.title}
               </Link>
             ))}
+            <Link href="/evaluations">Évaluations · 2 niveaux</Link>
           </nav>
         </details>
       </div>
