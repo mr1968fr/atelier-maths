@@ -31,6 +31,7 @@ export default function SiteHeader({ currentSlug }: { currentSlug?: string }) {
           </div>
           <a href={currentSlug ? `/${currentSlug}#exercices` : '/#mode-emploi'}>S’entraîner</a>
           <Link href="/evaluations">Évaluations</Link>
+          <Link className="nav-exam" href="/epreuve-anticipee">Épreuve anticipée</Link>
         </nav>
 
         <details className="mobile-nav">
@@ -47,6 +48,7 @@ export default function SiteHeader({ currentSlug }: { currentSlug?: string }) {
               </Link>
             ))}
             <Link href="/evaluations">Évaluations · 2 niveaux</Link>
+            <Link href="/epreuve-anticipee">Préparer l’épreuve anticipée</Link>
           </nav>
         </details>
       </div>

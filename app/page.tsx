@@ -48,6 +48,16 @@ export default function HomePage() {
           <div><span>03</span><strong>Mobiliser</strong><p>Une mission liée aux sciences, aux données ou aux sciences sociales.</p></div>
         </section>
 
+        <section className="exam-home-promo page-width">
+          <div>
+            <p className="overline">Nouveau · Épreuve anticipée</p>
+            <h2>Préparer les maths de fin de Première.</h2>
+            <p>Trois parcours adaptés : spécialité mathématiques, mathématiques spécifiques et voie technologique. Retrouve les automatismes sans calculatrice, les cours ciblés et des sujets blancs.</p>
+          </div>
+          <dl><div><dt>2 h</dt><dd>sans calculatrice</dd></div><div><dt>6 pts</dt><dd>QCM</dd></div><div><dt>14 pts</dt><dd>exercices</dd></div></dl>
+          <Link href="/epreuve-anticipee">Découvrir la préparation →</Link>
+        </section>
+
         <section className="toc-section page-width" id="sommaire">
           <header className="toc-section__header">
             <div><p className="overline">Sommaire</p><h2>Six chapitres, un même parcours.</h2></div>
@@ -100,7 +110,7 @@ export default function HomePage() {
       <footer className="site-footer site-footer--home">
         <div><strong>L’Atelier des Maths</strong><span>Manuel numérique · Première générale</span></div>
         <nav aria-label="Pied de page">
-          <a href="#sommaire">Sommaire</a><a href="#mode-emploi">Mode d’emploi</a><Link href="/evaluations">Évaluations</Link><Link href="/suites">Commencer</Link>
+          <a href="#sommaire">Sommaire</a><Link href="/epreuve-anticipee">Épreuve anticipée</Link><Link href="/evaluations">Évaluations</Link><Link href="/suites">Commencer</Link>
         </nav>
       </footer>
     </>
